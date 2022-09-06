@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "mqttdali"
+version = "0.1.0"
+description = "MQTT interface to python-dali"
+authors = ["Martijn Hemeryck <martijn.hemeryck@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+asyncio-mqtt = "^0.12.1"
+python-dali = "^0.9"
+pyusb = "^1.2.1"
+pymodbus = "^2.5.3"
+
+[tool.poetry.group.dev.dependencies]
+ipython = "^8.5.0"
+black = "^22.8.0"
+flake8 = "^5.0.4"
+isort = "^5.10.1"
+mypy = "^0.971"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

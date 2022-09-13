@@ -80,10 +80,10 @@ def assign_short_addresses(driver: SyncDALIDriver) -> typing.List[int]:
     logger.info("Scanning for existing addresses ...")
     # Check for addresses which were already assigned short addresses
     used_addresses = scan(driver)
+    logger.info(f"Addresses already in use: {used_addresses}")
     # Available is the remainder ...
     available = set(range(64)) - set(used_addresses)
     new_addresses: typing.List[int] = []
-
     logger.debug(f"Available addresses: {available}")
 
     # Assign random long addresses
@@ -115,6 +115,11 @@ def assign_short_addresses(driver: SyncDALIDriver) -> typing.List[int]:
                 raise Exception("No free addresses left!")
             low = low + 1
     driver.send(Terminate())
+
+    if new_addresses:
+        logger.info(f"Addresses assigned: {new_addresses}")
+    else:
+        logger.info("Did not assign any new addresses")
     logger.info("Finished!")
 
     return new_addresses

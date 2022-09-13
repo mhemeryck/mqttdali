@@ -4,7 +4,7 @@ import logging.config
 import re
 import typing
 
-import asyncio_mqtt
+import asyncio_mqtt  # type: ignore
 import dali.address  # type: ignore
 import dali.driver.base  # type: ignore
 import dali.driver.unipi  # type: ignore

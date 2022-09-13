@@ -4,6 +4,7 @@ import typing
 
 from dali.address import Short  # type: ignore
 from dali.driver.base import SyncDALIDriver  # type: ignore
+from dali.driver.unipi import SyncUnipiDALIDriver  # type: ignore
 from dali.gear.general import (  # type: ignore
     Compare,
     Initialise,
@@ -18,6 +19,10 @@ from dali.gear.general import (  # type: ignore
     Withdraw,
 )
 
+logging.basicConfig(
+    format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    level=logging.INFO,
+)
 logger = logging.getLogger(__name__)
 
 
@@ -72,23 +77,24 @@ def assign_short_addresses(driver: SyncDALIDriver) -> typing.List[int]:
     """
     Assign short addresses to devices on DALI based interfaced by interface.
     """
+    logger.info("Scanning for existing addresses ...")
     # Check for addresses which were already assigned short addresses
     used_addresses = scan(driver)
     # Available is the remainder ...
     available = set(range(64)) - set(used_addresses)
     new_addresses: typing.List[int] = []
 
-    logger.debug(f"available addresses: {available}")
+    logger.debug(f"Available addresses: {available}")
 
     # Assign random long addresses
-    logger.debug("Randomize addresses")
+    logger.info("Randomize addresses ...")
     driver.send(Terminate())
     # Broadcast = False means only ballasts without an assigned address shall react!
     driver.send(Initialise(broadcast=False, address=None))
     driver.send(Randomise())
     time.sleep(0.1)  # Randomise may take up to 100ms
-    logger.debug("Start scan")
 
+    logger.info("Starting sweep ...")
     low: int | None = 0
     high = 0xFFFFFF
     while low is not None:
@@ -99,8 +105,8 @@ def assign_short_addresses(driver: SyncDALIDriver) -> typing.List[int]:
             if available:
                 new_addr = available.pop()
                 driver.send(ProgramShortAddress(new_addr))
-                r = driver.send(VerifyShortAddress(new_addr))
-                if r.value is not True:
+                response = driver.send(VerifyShortAddress(new_addr))
+                if response.value is not True:
                     logger.warning(f"Short address assignment for {new_addr} ws not verified, proceeding anyway ...")
                 driver.send(Withdraw())
                 new_addresses.append(new_addr)
@@ -109,5 +115,11 @@ def assign_short_addresses(driver: SyncDALIDriver) -> typing.List[int]:
                 raise Exception("No free addresses left!")
             low = low + 1
     driver.send(Terminate())
+    logger.info("Finished!")
 
     return new_addresses
+
+
+if __name__ == "__main__":
+    driver = SyncUnipiDALIDriver()
+    assign_short_addresses(driver)

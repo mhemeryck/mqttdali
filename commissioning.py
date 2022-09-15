@@ -49,7 +49,7 @@ def find_next(driver: SyncDALIDriver, low: int, high: int) -> int | None:
         response = driver.send(Compare())
 
         if response.value is True:
-            logger.info("Found ballast at {low}; withdrawing it...")
+            logger.info(f"Found ballast at {low}; withdrawing it...")
             driver.send(Withdraw())
             return low
         return None

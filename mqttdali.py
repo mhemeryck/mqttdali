@@ -113,7 +113,7 @@ async def process_message(
         return
 
 
-async def main() -> None:
+async def amain() -> None:
     """Main loop"""
     logger.info("Set up MQTT connection.")
     async with asyncio_mqtt.Client(_MQTT_BROKER) as client:
@@ -124,5 +124,9 @@ async def main() -> None:
                 await process_message(message, _DRIVER, client)
 
 
+def main() -> None:
+    asyncio.run(amain())
+
+
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()

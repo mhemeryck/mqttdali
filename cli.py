@@ -125,6 +125,10 @@ def assign_short_addresses(driver: SyncDALIDriver) -> typing.List[int]:
     return new_addresses
 
 
-if __name__ == "__main__":
+def main() -> None:
     driver = SyncUnipiDALIDriver()
     assign_short_addresses(driver)
+
+
+if __name__ == "__main__":
+    main()

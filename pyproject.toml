@@ -19,6 +19,7 @@ black = "^22.8.0"
 flake8 = "^5.0.4"
 isort = "^5.10.1"
 mypy = "^0.971"
+types-setuptools = "^65.3.0"
 
 [build-system]
 requires = ["poetry-core"]

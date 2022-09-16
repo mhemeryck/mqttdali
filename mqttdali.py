@@ -58,8 +58,6 @@ _TOPIC_FMT = "{device_name}/lights/{number}/{op}/state"
 _CACHE: typing.Dict[int, int] = {}
 
 _BASE_TOPIC_FILTER = "{device_name}/lights/#".format(device_name=_DEVICE_NAME)
-# _COMMAND_TOPIC_FILTER = "{device_name}/lights/+/status/set".format(device_name=_DEVICE_NAME)
-# _BRIGHTNESS_TOPIC_FILTER = "{device_name}/lights/+/brightness/set".format(device_name=_DEVICE_NAME)
 
 
 async def process_message(

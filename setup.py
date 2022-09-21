@@ -2,7 +2,7 @@ import setuptools
 
 setuptools.setup(
     name="mqttdali",
-    version="0.1",
+    version="0.2",
     description="Translate MQTT events into DALI bus events",
     url="https://github.com/mhemeryck/mqttdali",
     install_requires=(

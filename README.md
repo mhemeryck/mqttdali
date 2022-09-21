@@ -10,4 +10,39 @@ Install dependencies in virtualenv
 
 Run main command
 
-    poetry run python mqttdali.py
+    poetry run python mqttdali.py {mqtt.example.com}
+
+## Virtualenv installation
+
+Create a virtualenv
+
+    python3 -m venv {venv-folder}
+
+Active
+
+    source {venv-folder}/bin/activate
+
+Install the full package
+
+    python3 python setup.py install
+
+Run `mqttdali`:
+
+    {venv-folder}/bin/mqttdali {mqtt.example.com}
+
+## Sample systemd unit file
+
+```
+[Unit]
+Description=mqttdali
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/opt/mqttdali/bin/mqttdali emqx.broker.com
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+```
